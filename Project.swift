@@ -26,6 +26,7 @@ let project = Project(
             deploymentTargets: .macOS("14.0"),
             infoPlist: .extendingDefault(with: ["NSMainStoryboardFile": ""]),
             sources: ["MagicMirror/**"],
+            resources: ["MagicMirror/Assets.xcassets"],
             dependencies: [
                 .package(product: "MMClientCommon"),
                 .package(product: "Collections"),
