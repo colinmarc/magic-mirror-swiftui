@@ -40,7 +40,7 @@ struct ServerBrowser: View {
                 }
                 .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
             }
-            .navigationTitle(server.addr)
+            .navigationTitle(server.addr.displayName)
             .focusedSceneValue(\.server, server)
             .navigationDestination(for: AppFolder.self) { folder in
                 ScrollView {

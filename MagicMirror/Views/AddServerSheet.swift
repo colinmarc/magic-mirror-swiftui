@@ -4,7 +4,7 @@ struct AddServerSheet: View {
     @Namespace var mainNamespace
     @Environment(\.dismiss) var dismiss
 
-    var updateSelectionOnSubmit: Binding<ServerConfig?>
+    var updateSelectionOnSubmit: Binding<ServerAddr?>
 
     @State private var host: String = ""
     @State private var port: Int = 9599
@@ -66,12 +66,12 @@ struct AddServerSheet: View {
 
         let config = ServerConfig(addr: "\(host):\(port)")
         modelContext.insert(config)
-        updateSelectionOnSubmit.wrappedValue = config
+        updateSelectionOnSubmit.wrappedValue = config.serverAddress
     }
 }
 
 #Preview {
-    @Previewable @State var selection: ServerConfig? = nil
+    @Previewable @State var selection: ServerAddr? = nil
     AddServerSheet(updateSelectionOnSubmit: $selection)
         .scenePadding()
         .frame(width: 400)

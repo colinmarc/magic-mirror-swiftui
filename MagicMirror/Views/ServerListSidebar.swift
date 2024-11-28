@@ -7,7 +7,7 @@ struct ServerListSidebar: View {
     @State private var showServerAddButton = false
     @Environment(\.configSheetPresentation) var configSheetPresentation
 
-    @Binding var selection: ServerConfig?
+    @Binding var selection: ServerAddr?
 
     @Environment(\.modelContext) private var modelContext
 
@@ -27,7 +27,7 @@ struct ServerListSidebar: View {
                         .opacity(showServerAddButton ? 1 : 0)
                 }
 
-                ForEach(savedServers, id: \.self) { serverConfig in
+                ForEach(savedServers, id: \.self.serverAddress) { serverConfig in
                     serverLink(server: ServerManager.shared.client(for: serverConfig))
                         .contextMenu {
                             Button {
@@ -41,8 +41,12 @@ struct ServerListSidebar: View {
 
             Section {
                 sidebarSectionHeader("Local Network")
+                    .padding([.top], 20)
+
+                ForEach(ServerManager.shared.localServers, id: \.self) {
+                    serverLink(server: ServerManager.shared.client(for: $0))
+                }
             }
-            .padding([.top], 20)
         }
         .listStyle(.sidebar)
         .onHover { isHovered in
@@ -68,7 +72,7 @@ struct ServerListSidebar: View {
 
     @ViewBuilder func serverLink(server: Server) -> some View {
         HStack {
-            Text(server.addr)
+            Text(server.addr.displayName)
             Spacer()
             sidebarImage(for: server.connectionStatus)
         }

@@ -4,7 +4,7 @@ import SwiftUI
 
 struct MainView: View {
 
-    @State private var selectedServer: ServerConfig?
+    @State private var selectedServer: ServerAddr?
 
     var body: some View {
         NavigationSplitView(

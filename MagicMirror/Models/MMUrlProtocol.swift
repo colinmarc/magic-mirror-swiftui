@@ -29,7 +29,7 @@ class MMImageURLProtocol: URLProtocol {
         let appID = pathComponents[2]
         Task {
             do {
-                let imageData = try await ServerManager.shared.client(for: host)
+                let imageData = try await ServerManager.shared.client(for: .hostPort(host))
                     .fetchApplicationImage(
                         id: appID)
                 sendImageData(imageData)

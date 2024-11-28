@@ -1,6 +1,7 @@
 import Collections
 import Foundation
 import MMClientCommon
+import Network
 import SwiftUI
 import os
 
@@ -28,17 +29,52 @@ enum ServerError: Error {
     case disconnected
 }
 
+enum ServerAddr: Hashable, CustomStringConvertible {
+    case hostPort(String)
+    case mdns(NWEndpoint)
+
+    var description: String {
+        switch self {
+        case .hostPort(let hostPort):
+            return hostPort
+        case .mdns(let endpoint):
+            return endpoint.debugDescription
+        }
+    }
+
+    var displayName: String {
+        switch self {
+        case .hostPort(let hostPort):
+            return hostPort
+        case .mdns(let endpoint):
+            if case .service(let name, _, _, _) = endpoint {
+                return name
+            } else {
+                return endpoint.debugDescription
+            }
+        }
+    }
+}
+
 @Observable
 @MainActor
 class Server: Identifiable {
-    let addr: String
+    let addr: ServerAddr
 
     var apps: OrderedDictionary<String, Application>
     var rootFolder: AppFolder
 
     var sessions: OrderedDictionary<uint64, Session>
 
-    init(addr: String) {
+    convenience init(addr: String) {
+        self.init(addr: .hostPort(addr))
+    }
+
+    convenience init(endpoint: NWEndpoint) {
+        self.init(addr: .mdns(endpoint))
+    }
+
+    init(addr: ServerAddr) {
         self.addr = addr
         self.apps = OrderedDictionary()
         self.rootFolder = AppFolder(parent: nil, fullPath: [])
@@ -92,9 +128,18 @@ class Server: Identifiable {
 
         let task = Task {
             () throws -> Client in
-            Logger.client.info("connecting to \(self.addr, privacy: .public)")
+            let hostPort =
+                switch self.addr {
+                case .hostPort(let hostPort):
+                    hostPort
+                case .mdns(let endpoint):
+                    try await endpoint.resolveUDPHostPort()
+                }
+
+            Logger.client.info("connecting to \(hostPort, privacy: .public)")
+
             return try await Client(
-                addr: self.addr, clientName: "MagicMirrorApp")
+                addr: hostPort, clientName: "MagicMirrorApp")
         }
 
         self.connectionStatus = .connecting(task, self.errorStatus)
@@ -174,7 +219,7 @@ class Server: Identifiable {
         await self.reloadSessions()
     }
 
-    nonisolated var id: String { addr }
+    nonisolated var id: ServerAddr { addr }
 }
 
 struct FocusedServerKey: FocusedValueKey {
@@ -185,5 +230,41 @@ extension FocusedValues {
     var server: FocusedServerKey.Value? {
         get { self[FocusedServerKey.self] }
         set { self[FocusedServerKey.self] = newValue }
+    }
+}
+
+enum NWEndpointResolutionError: Error {
+    case resolutionFailed(NWError?)
+}
+
+extension NWEndpoint {
+    func resolveUDPHostPort() async throws -> String {
+        let connection = NWConnection(to: self, using: .udp)
+        return try await withCheckedThrowingContinuation { continuation in
+            connection.stateUpdateHandler = { state in
+                switch state {
+                case .preparing, .cancelled:
+                    return
+                case .ready:
+                    if let innerEndpoint = connection.currentPath?.remoteEndpoint,
+                        case .hostPort(let host, let port) = innerEndpoint
+                    {
+                        continuation.resume(returning: "[\(host)]:\(port)")
+                    } else {
+                        continuation.resume(
+                            throwing: NWEndpointResolutionError.resolutionFailed(nil))
+                    }
+
+                    connection.cancel()
+                case .failed(let err):
+                    continuation.resume(throwing: NWEndpointResolutionError.resolutionFailed(err))
+                default:
+                    Logger.general.error("unexpected state: \(String(describing: state))")
+                    continuation.resume(throwing: NWEndpointResolutionError.resolutionFailed(nil))
+                }
+            }
+
+            connection.start(queue: DispatchQueue.main)
+        }
     }
 }
