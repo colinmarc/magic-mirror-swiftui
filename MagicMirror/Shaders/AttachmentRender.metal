@@ -30,7 +30,5 @@ vertexShader(uint vertexID [[vertex_id]])
 fragment half4 fragmentShader(RasterizerData in [[stage_in]],
                               texture2d<half> videoTexture [[texture(0)]])
 {
-//    half2 rg = half2(clamp(in.uv, 0.0, 1.0));
-//    return half4(rg, 0.0, 1.0);
     return videoTexture.sample(videoSampler, float2(clamp(in.uv, 0.0, 1.0)));
 }

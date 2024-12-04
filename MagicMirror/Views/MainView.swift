@@ -15,6 +15,7 @@ struct MainView: View {
                 if let conf = selectedServer {
                     let server = ServerManager.shared.client(for: conf)
                     ServerLoader(server: server)
+                        .focusedSceneValue(\.server, server)
                 } else {
                     ContentUnavailableView(
                         "No Server Selected", systemImage: "server.rack",

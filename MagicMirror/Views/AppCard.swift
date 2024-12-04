@@ -30,9 +30,13 @@ struct AppCard<Selection: Hashable>: View {
         self.action = action
     }
 
+    private var selected: Bool {
+        selection == tag
+    }
+
     var body: some View {
         VStack {
-            appImage()
+            appImage
                 .frame(width: 160, height: 90)
 
             //            if operationInProgress {
@@ -47,7 +51,7 @@ struct AppCard<Selection: Hashable>: View {
             let text = Text(name)
                 .lineLimit(1)
                 .font(.footnote)
-            if selection == tag {
+            if selected {
                 text.background {
                     RoundedRectangle(cornerRadius: 1.0)
                         .inset(by: -4.0).fill(Color.accentColor)
@@ -72,12 +76,15 @@ struct AppCard<Selection: Hashable>: View {
         )
     }
 
-    @ViewBuilder private func appImage() -> some View {
+    @ViewBuilder private var appImage: some View {
         if let imageURL {
             AsyncImage(url: imageURL) { phase in
                 if let image = phase.image {
                     image.resizable().aspectRatio(contentMode: .fit)
                         .padding([.vertical], 10)
+                        .shadow(
+                            color: selected ? .accentColor : .init(red: 0.3, green: 0.3, blue: 0.3),
+                            radius: 10)
                 } else if phase.error != nil {
                     placeholderImage
                 } else {
@@ -125,6 +132,12 @@ extension MMClientCommon.Application {
         ),
         Application(
             id: "steam-gamepadui",
+            description: "Steam",
+            folder: [],
+            imagesAvailable: [.header]
+        ),
+        Application(
+            id: "book-of-hours-1028310",
             description: "Foo Bar Baz This is Too Long Way Too Long",
             folder: [],
             imagesAvailable: [.header]
@@ -181,7 +194,8 @@ extension MMClientCommon.Application {
                 name: apps[1].displayName, imageURL: server.headerImageURL(for: apps[1]),
                 systemIcon: "play.display", selection: $selection, tag: 4)
             AppCard(
-                name: apps[1].displayName, systemIcon: "folder", selection: $selection,
+                name: apps[2].displayName, imageURL: server.headerImageURL(for: apps[2]),
+                systemIcon: "folder", selection: $selection,
                 tag: 5)
         }
         .padding()
