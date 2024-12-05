@@ -30,6 +30,7 @@ let project = Project(
                 "NSMainStoryboardFile": .string(""),
                 "LSApplicationCategory": .string("public.app-category.games"),
                 "CFBundleShortVersionString": .string(appVersion),
+                "GCSupportsControllerUserInteraction": .boolean(true),
             ]),
             sources: ["MagicMirror/**"],
             resources: ["MagicMirror/Assets.xcassets"],

@@ -83,6 +83,7 @@ protocol AttachmentPresentationDelegate {
     var videoPlayer: VideoPlayer { get }
     var audioPlayer: AudioPlayer { get }
 
+    func didAttach(_ attachment: MMClientCommon.Attachment)
     func updateCursor(icon: MMClientCommon.CursorIcon, image: NSImage?, hotspot: CGPoint)
     func lockPointer(to location: CGPoint)
     func releasePointer()
@@ -172,7 +173,7 @@ class AttachmentPresentation {
     /// Launches an app and attaches to it.
     func attach(
         to server: Server, applicationID: String, displayParams: DisplayParams,
-        codec: VideoCodec = .h265
+        codec: VideoCodec = .h265, gamepads: [Gamepad] = []
     ) {
         if let attachment = self.currentAttachment.take() {
             Task {
@@ -193,7 +194,7 @@ class AttachmentPresentation {
             let session = try await server.connect().launchSession(
                 applicationId: applicationID,
                 displayParams: displayParams,
-                permanentGamepads: [],
+                permanentGamepads: gamepads,
                 timeout: 30.0)
 
             Logger.attachment.info(
@@ -326,6 +327,9 @@ private class Attachment {
 
                     self.attachment = handle
                     self.status = .connected
+                    if self.enableEventPropogation {
+                        self.superDelegate.didAttach(handle)
+                    }
                 }
             } catch let err as AttachmentPresentationError {
                 self.status = .errored(err, nil)

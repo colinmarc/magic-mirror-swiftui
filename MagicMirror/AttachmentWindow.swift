@@ -137,6 +137,8 @@ class AttachmentWindowController: NSWindowController {
 
     private var lastConfig: LaunchConfiguration?
 
+    private let gamepadManager = GamepadManager()
+
     init() {
         let view = AttachmentView()
         let renderer = AttachmentRenderer(view)
@@ -180,12 +182,21 @@ class AttachmentWindowController: NSWindowController {
     ) {
         self.lastConfig = config
 
+        let gamepads: [Gamepad] =
+            if let pad = self.gamepadManager.currentPad {
+                [pad]
+            } else {
+                []
+            }
+
         let params = self.prepareForAttachment(config)
         self.presentation.attach(
             to: server,
             applicationID: applicationID,
-            displayParams: params
+            displayParams: params,
+            gamepads: gamepads
         )
+
         self.window?.makeKeyAndOrderFront(nil)
     }
 
@@ -637,6 +648,10 @@ extension AttachmentWindowController: NSWindowDelegate {
 extension AttachmentWindowController: AttachmentPresentationDelegate {
     var videoPlayer: AttachmentDecompressionSession {
         self.decoder
+    }
+
+    func didAttach(_ attachment: Attachment) {
+        self.gamepadManager.enableInputFor(attachment: attachment)
     }
 
     func updateCursor(
