@@ -24,7 +24,9 @@ let project = Project(
             product: .app,
             bundleId: "com.colinmarc.MagicMirror",
             deploymentTargets: .macOS("14.0"),
-            infoPlist: .extendingDefault(with: ["NSMainStoryboardFile": ""]),
+            infoPlist: .extendingDefault(with: [
+                "NSMainStoryboardFile": "", "LSApplicationCategory": "public.app-category.games",
+            ]),
             sources: ["MagicMirror/**"],
             resources: ["MagicMirror/Assets.xcassets"],
             dependencies: [
