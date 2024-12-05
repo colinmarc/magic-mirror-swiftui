@@ -78,6 +78,15 @@ dev: build
 release: build
 	gh auth status 2>/dev/null
 	git diff-index --quiet HEAD --
+
 	git cliff --bump > CHANGELOG.md
+	sed -i '' 's|appVersion = "[0-9\.]*"|appVersion = "{{next_version}}"|g' Project.swift
+
 	git commit -am "chore: bump version to v{{next_version}}"
 	git tag "v{{next_version}}" -a -m "$(git cliff --latest --bump)" --cleanup=verbatim
+
+	git push --follow
+	create-dmg "{{build_dir}}/Release/MagicMirror.app" "{{build_dir}}/Release"
+	gh release create "v{{next_version}}" \
+		--title "v{{next_version}}" --notes "$(git cliff --latest)" \
+		"{{build_dir}}/Release/*.dmg"

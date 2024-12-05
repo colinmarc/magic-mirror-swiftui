@@ -1,5 +1,7 @@
 import ProjectDescription
 
+let appVersion = "0.1.0"
+
 let project = Project(
     name: "MagicMirror",
     packages: [
@@ -25,7 +27,9 @@ let project = Project(
             bundleId: "com.colinmarc.MagicMirror",
             deploymentTargets: .macOS("14.0"),
             infoPlist: .extendingDefault(with: [
-                "NSMainStoryboardFile": "", "LSApplicationCategory": "public.app-category.games",
+                "NSMainStoryboardFile": .string(""),
+                "LSApplicationCategory": .string("public.app-category.games"),
+                "CFBundleShortVersionString": .string(appVersion),
             ]),
             sources: ["MagicMirror/**"],
             resources: ["MagicMirror/Assets.xcassets"],
