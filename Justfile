@@ -8,6 +8,8 @@ framework_name := "MMClientCommon"
 
 build_dir := `mktemp -d`
 
+next_version := `git cliff --bumped-version`
+
 clean:
 	rm -rf {{mm_build_dir}}
 
@@ -61,7 +63,7 @@ build-common-xcframework: _build-mm
 build: build-common-xcframework
 	xcode-build-server config -scheme MagicMirror -workspace *.xcworkspace
 	tuist generate --no-open
-	tuist build --build-output-path {{build_dir}}
+	tuist build --build-output-path {{build_dir}} -C Release
 
 run: build
 	open {{build_dir}}/Debug/MagicMirror.app
@@ -72,3 +74,10 @@ quickrun:
 
 dev: build
 	reflex -r '\.swift' -R 'build\/' -s -- just quickrun
+
+release: build
+	gh auth status 2>/dev/null
+	git diff-index --quiet HEAD --
+	git cliff --bump > CHANGELOG.md
+	git commit -am "chore: bump version to v{{next_version}}"
+	git tag "v{{next_version}}" -a -m "$(git cliff --latest --bump)" --cleanup=verbatim
