@@ -517,6 +517,12 @@ class AttachmentWindowController: NSWindowController {
         }
     }
 
+    override func scrollWheel(with event: NSEvent) {
+        let ty: ScrollType = event.hasPreciseScrollingDeltas ? .continuous : .discrete
+        self.presentation.handle?.pointerScroll(
+            scrollType: ty, x: event.scrollingDeltaX, y: event.scrollingDeltaY)
+    }
+
     override func keyDown(with event: NSEvent) {
         self.keyEvent(event, state: event.isARepeat ? KeyState.repeat : KeyState.pressed)
     }
@@ -586,7 +592,6 @@ class AttachmentWindowController: NSWindowController {
             handle.keyboardInput(key: .metaLeft, state: .released, character: 0)
             self.commandPressed = false
         }
-
     }
 }
 
