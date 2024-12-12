@@ -447,6 +447,14 @@ class AttachmentWindowController: NSWindowController {
             x: relX * Double(config.width), y: relY * Double(config.height))
     }
 
+    override func mouseDragged(with event: NSEvent) {
+        self.mouseMoved(with: event)
+    }
+
+    override func rightMouseDragged(with event: NSEvent) {
+        self.mouseMoved(with: event)
+    }
+
     override func mouseDown(with event: NSEvent) {
         if self.cursorExplicitlyReleased {
             self.cursorExplicitlyReleased = false
