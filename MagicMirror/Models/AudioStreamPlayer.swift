@@ -58,31 +58,12 @@ class SyncingAudioEngine: AudioStreamPlayer {
         self.bufferNode?.enqueueSamples(buf)
 
         // Determine what our audio PTS *should* be.
-        var targetLatency: Int64 = 30  // Keep at least 30ms in the buffer.
-        if let (syncPts, syncTime) = self.videoSyncPoint {
-            let target = Int64(syncPts) + Int64((ContinuousClock.now - syncTime).inMs)
-            Logger.attachment.debug("target latency: \(target - Int64(pts))")
-            targetLatency = max(targetLatency, target - Int64(pts))
-        }
-
-        // figure out what the player pts currently is
-        //        let nodeTime = self.playerNode.lastRenderTime!
-        //        let playerPTS = Int64(playerStart.extrapolate(to: nodeTime.hostTime))
-
-        if let buffer = self.bufferNode {
-            Logger.attachment.debug(
-                "audio buffer: \(buffer.bufferedFrames) frames, \(buffer.latency)ms latency, target \(targetLatency)ms, output \(self.engine.mainMixerNode.outputPresentationLatency * 1000)"
-            )
-
-            //            if latency > 40 || (latency > 30 && self.speedNode.rate == 1.05) {
-            //                self.speedNode.rate = 1.05
-            //            } else if latency < 10 || (latency < 20 && self.speedNode.rate == 0.95) {
-            //                self.speedNode.rate = 0.95
-            //            } else {
-            //                self.speedNode.rate = 1
-            //            }
-            //        }
-        }
+        //        var targetLatency: Int64 = 30  // Keep at least 30ms in the buffer.
+        //        if let (syncPts, syncTime) = self.videoSyncPoint {
+        //            let target = Int64(syncPts) + Int64((ContinuousClock.now - syncTime).inMs)
+        //            Logger.attachment.debug("target latency: \(target - Int64(pts))")
+        //            targetLatency = max(targetLatency, target - Int64(pts))
+        //        }
     }
 
     func sync(pts: UInt64, measuredAt: ContinuousClock.Instant) {
