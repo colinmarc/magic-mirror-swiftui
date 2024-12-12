@@ -1,3 +1,15 @@
+## [0.1.1] - 2024-12-12
+
+### New Features
+
+- Gamepad support (058939959d7f2ed9dc1735bb0993104ca36d9b7c)
+
+### Bugfixes
+
+- Remove noisy log (681b74febf6065a6e215411449037b3e78d9676e)
+- Send motion events when dragging (d29de535fba67e282f1cfd82784553acfcc38d9f)
+- Send scroll wheel motion (6552eba3d8febf111a6dfc1a03e63e9e5f5fdc79)
+
 ## [0.1.0] - 2024-12-05
 
 ### New Features

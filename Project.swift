@@ -1,6 +1,6 @@
 import ProjectDescription
 
-let appVersion = "0.1.0"
+let appVersion = "v0.1.1"
 
 let project = Project(
     name: "MagicMirror",
