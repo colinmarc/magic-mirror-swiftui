@@ -118,7 +118,7 @@ class AttachmentPresentation {
     /// Attaches to a session, after optionally resizing the remote display.
     func attach(
         to server: Server, session: Session, updatedDisplayParams: DisplayParams? = .none,
-        codec: VideoCodec = .h265
+        codec: VideoCodec = .h265, qualityPreset: Int = 7
     ) {
         var initialStatus: AttachmentPresentationStatus
         if let attachment = self.currentAttachment.take() {
@@ -165,7 +165,7 @@ class AttachmentPresentation {
 
             let config = AttachmentConfig(
                 width: session.displayParams.width, height: session.displayParams.height,
-                codec: codec)
+                codec: codec, qualityPreset: UInt32(qualityPreset))
             return (session, config)
         }
     }
@@ -173,7 +173,7 @@ class AttachmentPresentation {
     /// Launches an app and attaches to it.
     func attach(
         to server: Server, applicationID: String, displayParams: DisplayParams,
-        codec: VideoCodec = .h265, gamepads: [Gamepad] = []
+        codec: VideoCodec = .h265, qualityPreset: Int = 7, gamepads: [Gamepad] = []
     ) {
         if let attachment = self.currentAttachment.take() {
             Task {
@@ -208,7 +208,7 @@ class AttachmentPresentation {
 
             let config = AttachmentConfig(
                 width: session.displayParams.width, height: session.displayParams.height,
-                codec: codec)
+                codec: codec, qualityPreset: UInt32(qualityPreset))
 
             return (session, config)
         }

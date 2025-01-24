@@ -107,7 +107,7 @@ class LaunchSettings: ObservableObject {
     @AppStorage("remoteDisplayForce1xScale") var force1xScale: Bool = false
 
     @AppStorage("videoCodec") var videoCodec: VideoCompressionCodec = .h265
-    @AppStorage("qualityPreset") var qualityPreset: Double = 6
+    @AppStorage("qualityPreset") var qualityPreset: Double = 7
 
     func launchConfiguration(for server: Server) -> LaunchConfiguration {
         let remoteDisplayConfig: RemoteDisplayConfiguration =

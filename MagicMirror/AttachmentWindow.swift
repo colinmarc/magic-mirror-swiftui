@@ -194,6 +194,7 @@ class AttachmentWindowController: NSWindowController {
             to: server,
             applicationID: applicationID,
             displayParams: params,
+            qualityPreset: config.preset,
             gamepads: gamepads
         )
 
@@ -212,7 +213,8 @@ class AttachmentWindowController: NSWindowController {
         self.presentation.attach(
             to: server,
             session: session,
-            updatedDisplayParams: params
+            updatedDisplayParams: params,
+            qualityPreset: config.preset
         )
         self.window?.makeKeyAndOrderFront(nil)
     }
