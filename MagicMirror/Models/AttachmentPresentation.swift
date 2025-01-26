@@ -435,6 +435,22 @@ extension Attachment: AttachmentDelegate {
         }
     }
 
+    nonisolated func droppedVideoPacket(dropped: MMClientCommon.DroppedPacket) {
+        if dropped.optional {
+            return
+        }
+
+        weak var this = self
+        Task {
+            if let self = this, await self.enableEventPropogation,
+                let currentStreamSeq = await self.videoStream?.streamSeq,
+                dropped.streamSeq == currentStreamSeq
+            {
+                await self.attachment?.requestVideoRefresh(streamSeq: currentStreamSeq)
+            }
+        }
+    }
+
     nonisolated func audioStreamStart(streamSeq: UInt64, params: MMClientCommon.AudioStreamParams) {
         DispatchQueue.main.sync {
             if !self.enableEventPropogation {
