@@ -20,8 +20,8 @@ _clone-mm:
 	cd {{mm_build_dir}}/mm
 	git init
 	git remote add origin {{mm_origin}} || git remote set-url origin {{mm_origin}}
-	git fetch origin {{mm_tag}}
-	git reset --hard origin/{{mm_tag}}
+	git fetch origin tag {{mm_tag}}
+	git reset --hard {{mm_tag}}
 
 _build-mm $MACOSX_DEPLOYMENT_TARGET="10.15": _clone-mm
 	cd {{mm_clone_dir}}/mm-client-common && cargo build -q --release \
