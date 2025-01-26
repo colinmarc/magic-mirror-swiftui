@@ -1,3 +1,13 @@
+## [0.1.2] - 2025-01-26
+
+### New Features
+
+- Add FEC support (d7b62169c16c4c629563ccb73118f95aaf6be2da)
+
+### Bugfixes
+
+- Actually send quality preset (21376d411c0765c92222ec551881fca006f228f1)
+
 ## [0.1.1] - 2024-12-12
 
 ### New Features
