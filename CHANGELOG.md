@@ -1,3 +1,13 @@
+## [0.1.3] - 2025-02-01
+
+### New Features
+
+- Add 1440p as an 'auto' resolution (4fa795364494420e33c0522686693d0457eedbc3)
+
+### Bugfixes
+
+- Unhide the cursor when an attachment ends (d20d91bcca068cda30d4a602d354de0e2f88e29a)
+
 ## [0.1.2] - 2025-01-26
 
 ### New Features
