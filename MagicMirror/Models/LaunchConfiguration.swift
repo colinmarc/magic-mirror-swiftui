@@ -14,6 +14,7 @@ enum RemoteDisplayFixedHeight: Int, Codable, CaseIterable, Hashable, Identifiabl
     case res480p = 480
     case res720p = 780
     case res1080p = 1080
+    case res1440p = 1440
     case res2160p = 2160
 
     var id: Self {
@@ -28,6 +29,8 @@ enum RemoteDisplayFixedHeight: Int, Codable, CaseIterable, Hashable, Identifiabl
             "720p"
         case .res1080p:
             "1080p"
+        case .res1440p:
+            "1440p"
         case .res2160p:
             "2160p"
         }
