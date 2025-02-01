@@ -80,7 +80,7 @@ release: build
 	git diff-index --quiet HEAD --
 
 	git cliff --bump > CHANGELOG.md
-	sed -i '' 's|appVersion = "[0-9\.]*"|appVersion = "{{next_version}}"|g' Project.swift
+	sed -i '' 's|appVersion = "[v0-9\.]*"|appVersion = "{{next_version}}"|g' Project.swift
 
 	git commit -am "chore: bump version to {{next_version}}"
 	git tag "{{next_version}}" -a -m "$(git cliff --latest --bump)" --cleanup=verbatim
