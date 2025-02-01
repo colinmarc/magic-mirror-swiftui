@@ -87,6 +87,7 @@ release: build
 
 	git push --follow
 	create-dmg "{{build_dir}}/Release/MagicMirror.app" "{{build_dir}}/Release"
+	find "{{build_dir}}/Release" -name '*.dmg' -exec mv {} "/tmp/MagicMirror-{{next_version}}.dmg" \; -quit
 	gh release create "{{next_version}}" \
 		--title "{{next_version}}" --notes "$(git cliff --latest)" \
-		$(ls -1 "{{build_dir}}/Release" | grep '.dmg' | head -1)
+		"/tmp/MagicMirror-{{next_version}}.dmg"
