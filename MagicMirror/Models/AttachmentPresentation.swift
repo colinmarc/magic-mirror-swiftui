@@ -84,6 +84,7 @@ protocol AttachmentPresentationDelegate {
     var audioPlayer: AudioPlayer { get }
 
     func didAttach(_ attachment: MMClientCommon.Attachment)
+    func didDetach()
     func updateCursor(icon: MMClientCommon.CursorIcon, image: NSImage?, hotspot: CGPoint)
     func lockPointer(to location: CGPoint)
     func releasePointer()
@@ -198,7 +199,7 @@ class AttachmentPresentation {
                 timeout: 30.0)
 
             Logger.attachment.info(
-                "launched session \(session.id)  for app \"\(applicationID, privacy: .public))\""
+                "launched session \(session.id) for app \"\(applicationID, privacy: .public))\""
             )
 
             // Make sure the new session gets displayed in the browser view.
@@ -544,6 +545,10 @@ extension Attachment: AttachmentDelegate {
                 // Leave the status as what it is.
             } else {
                 self.status = .ended
+            }
+
+            if self.enableEventPropogation {
+                self.superDelegate.didDetach()
             }
         }
     }

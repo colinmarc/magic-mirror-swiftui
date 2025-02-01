@@ -669,6 +669,11 @@ extension AttachmentWindowController: AttachmentPresentationDelegate {
         self.gamepadManager.enableInputFor(attachment: attachment)
     }
 
+    func didDetach() {
+        self.wantsCursorLockedTo = nil
+        self.updateCursor()
+    }
+
     func updateCursor(
         icon: MMClientCommon.CursorIcon,
         image: NSImage?,

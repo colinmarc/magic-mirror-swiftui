@@ -74,7 +74,6 @@ class AudioBufferNode {
             if buf == nil || availableFrames < lowWatermark
                 || (refillMode && availableFrames < targetFrameCount)
             {
-                Logger.attachment.debug("silence for \(frameCount)  frames")
                 refillMode = true
 
                 // Not enough data; fill with silence
