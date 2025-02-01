@@ -89,4 +89,4 @@ release: build
 	create-dmg "{{build_dir}}/Release/MagicMirror.app" "{{build_dir}}/Release"
 	gh release create "{{next_version}}" \
 		--title "{{next_version}}" --notes "$(git cliff --latest)" \
-		$(ls -1 "{{build_dir}}/Release/*.dmg" | head -1)
+		$(ls -1 "{{build_dir}}/Release" | grep '.dmg' | head -1)
