@@ -402,7 +402,7 @@ extension Attachment: AttachmentDelegate {
 
             self.status = .connected
             if let stream = self.videoStream {
-                Task { await stream.reset(streamSeq: streamSeq, params: params) }
+                stream.reset(streamSeq: streamSeq, params: params)
             } else {
                 self.videoStream = VideoStreamReader(
                     player: self.superDelegate.videoPlayer,
@@ -413,16 +413,15 @@ extension Attachment: AttachmentDelegate {
 
     nonisolated func videoPacket(packet: MMClientCommon.Packet) {
         let pts = packet.pts()
-        weak var this = self
 
-        Task {
-            await self.videoStream?.recvPacket(packet) {
+        DispatchQueue.main.async {
+            self.videoStream?.recvPacket(packet) {
                 // And then after the video frame has been rendered...
                 let now = ContinuousClock.now
 
                 Task {
-                    if let self = this, await self.enableEventPropogation {
-                        await self.superDelegate.audioPlayer.sync(pts: pts, measuredAt: now)
+                    if self.enableEventPropogation {
+                        self.superDelegate.audioPlayer.sync(pts: pts, measuredAt: now)
                     }
                 }
             }
@@ -430,6 +429,7 @@ extension Attachment: AttachmentDelegate {
     }
 
     nonisolated func droppedVideoPacket(dropped: MMClientCommon.DroppedPacket) {
+        Logger.attachment.debug("dropped video packet: \(String(describing:dropped))")
         if dropped.optional {
             return
         }
@@ -440,6 +440,7 @@ extension Attachment: AttachmentDelegate {
                 let currentStreamSeq = await self.videoStream?.streamSeq,
                 dropped.streamSeq == currentStreamSeq
             {
+                Logger.attachment.debug("requesting video refresh for \(currentStreamSeq)")
                 await self.attachment?.requestVideoRefresh(streamSeq: currentStreamSeq)
             }
         }

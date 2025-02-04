@@ -2,7 +2,8 @@ import AVFoundation
 import MMClientCommon
 import os
 
-actor VideoStreamReader {
+@MainActor
+class VideoStreamReader {
     unowned let player: VideoStreamPlayer
 
     var streamSeq: UInt64

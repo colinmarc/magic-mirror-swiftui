@@ -30,11 +30,9 @@ class AttachmentDecompressionSession: VideoStreamPlayer {
         let size = CMVideoFormatDescriptionGetDimensions(desc)
         let colorspace = desc.colorspace
 
-        DispatchQueue.main.sync {
-            self.renderer.updateTextureProperties(
-                size: CGSize(width: CGFloat(size.width), height: CGFloat(size.height)),
-                colorspace: colorspace)
-        }
+        self.renderer.updateTextureProperties(
+            size: CGSize(width: CGFloat(size.width), height: CGFloat(size.height)),
+            colorspace: colorspace)
     }
 
     func videoFrameAvailable(buf: CMSampleBuffer, callback: (() -> Void)?) {
@@ -94,8 +92,10 @@ class AttachmentDecompressionSession: VideoStreamPlayer {
                 //            Logger.renderer.debug("in frame callback dims: \(width)x\(height), format: \(image.cvPixelFormat.description), depth: \(image.bytesPerRow(of: 0)), colorspace: \(colorspace)")
 
                 // Trigger the frame to draw.
-                DispatchQueue.main.sync {
-                    self.renderer.enqueueFrame(image, callback: callback ?? {})
+                Task {
+                    DispatchQueue.main.sync {
+                        self.renderer.enqueueFrame(image, callback: callback ?? {})
+                    }
                 }
             })
 

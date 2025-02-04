@@ -1,6 +1,7 @@
 import AVFoundation
 import os
 
+@MainActor
 protocol VideoStreamPlayer: AnyObject {
     func formatDescriptionChanged(desc _: CMFormatDescription)
     func videoFrameAvailable(buf _: CMSampleBuffer, callback: (() -> Void)?)
