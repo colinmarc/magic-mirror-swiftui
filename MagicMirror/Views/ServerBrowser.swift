@@ -40,6 +40,9 @@ struct ServerBrowser: View {
                 }
                 .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
             }
+            .onAppear {
+                Task { await server.reloadSessionsAndApps() }
+            }
             .navigationTitle(server.addr.displayName)
             .navigationDestination(for: AppFolder.self) { folder in
                 ScrollView {
@@ -70,7 +73,6 @@ struct ServerBrowser: View {
                         //                    self.operationInProgress = true
                         Task {
                             try? await server.endSession(sessionID: session.id)
-                            await server.reloadSessions()
                         }
                     } label: {
                         Label("End Session", systemImage: "play.fill")

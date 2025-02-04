@@ -28,7 +28,7 @@ struct ServerListSidebar: View {
                 }
 
                 ForEach(savedServers, id: \.self.serverAddress) { serverConfig in
-                    serverLink(server: ServerManager.shared.client(for: serverConfig))
+                    serverLink(for: ServerManager.shared.client(for: serverConfig))
                         .contextMenu {
                             Button {
                                 modelContext.delete(serverConfig)
@@ -44,7 +44,7 @@ struct ServerListSidebar: View {
                     .padding([.top], 20)
 
                 ForEach(ServerManager.shared.localServers, id: \.self) {
-                    serverLink(server: ServerManager.shared.client(for: $0))
+                    serverLink(for: ServerManager.shared.client(for: $0))
                 }
             }
         }
@@ -70,24 +70,20 @@ struct ServerListSidebar: View {
         }
     }
 
-    @ViewBuilder func serverLink(server: Server) -> some View {
+    @ViewBuilder func serverLink(for server: Server) -> some View {
         HStack {
             Text(server.addr.displayName)
             Spacer()
-            sidebarImage(for: server.connectionStatus)
-        }
-    }
 
-    @ViewBuilder func sidebarImage(for status: LastStatus) -> some View {
-        switch status {
-        case .error, .disconnected:
-            Image(systemName: "bolt.horizontal.circle")
-                .foregroundStyle(.secondary)
-        case .connecting:
-            Image(systemName: "progress.indicator")
-                .symbolEffect(.variableColor.iterative, options: .repeating)
-        default:
-            EmptyView()
+            if server.isConnecting || server.isReloading {
+                LoadingSpinner(speed: 3.0)
+                    .frame(width: 12, height: 12).padding(.trailing, 2)
+            } else if case .error(_) = server.connectionStatus {
+                Image(systemName: "bolt.horizontal.circle")
+                    .foregroundStyle(.secondary)
+            } else {
+                EmptyView()
+            }
         }
     }
 }

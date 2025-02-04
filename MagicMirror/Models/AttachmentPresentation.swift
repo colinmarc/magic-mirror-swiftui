@@ -192,20 +192,14 @@ class AttachmentPresentation {
             Logger.attachment.info(
                 "launching session for app \"\(applicationID, privacy: .public)\"")
 
-            let session = try await server.connect().launchSession(
-                applicationId: applicationID,
+            let session = try await server.launchSession(
+                applicationID: applicationID,
                 displayParams: displayParams,
-                permanentGamepads: gamepads,
-                timeout: 30.0)
+                permanentGamepads: gamepads)
 
             Logger.attachment.info(
                 "launched session \(session.id) for app \"\(applicationID, privacy: .public))\""
             )
-
-            // Make sure the new session gets displayed in the browser view.
-            Task.detached {
-                await server.reloadSessions()
-            }
 
             let config = AttachmentConfig(
                 width: session.displayParams.width, height: session.displayParams.height,
@@ -344,7 +338,6 @@ private class Attachment {
                 self.status = .errored(.unknown, nil)
             }
         }
-
     }
 
     func updateDisplayParamsLive(with params: DisplayParams) async {
@@ -540,6 +533,12 @@ extension Attachment: AttachmentDelegate {
 
     nonisolated func attachmentEnded() {
         DispatchQueue.main.sync {
+            // Check if the session ended.
+            // TODO: add sessionEnded to AttachmentDelegate
+            Task {
+                await self.server.reloadSessions()
+            }
+
             self.attachment = nil
             if case .errored = self.status {
                 // Leave the status as what it is.

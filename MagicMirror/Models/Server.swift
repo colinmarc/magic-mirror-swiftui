@@ -66,6 +66,29 @@ class Server: Identifiable {
 
     var sessions: OrderedDictionary<uint64, Session>
 
+    private var reloadOperationsInProgress = 0
+    var isReloading: Bool {
+        self.reloadOperationsInProgress > 0
+    }
+
+    private(set) var connectionStatus: LastStatus = .disconnected
+    var isConnecting: Bool {
+        if case .connecting(_, _) = self.connectionStatus {
+            true
+        } else {
+            false
+        }
+    }
+
+    var errorStatus: Error? {
+        switch self.connectionStatus {
+        case .error(let error), .connecting(_, .some(let error)):
+            error
+        default:
+            nil
+        }
+    }
+
     convenience init(addr: String) {
         self.init(addr: .hostPort(addr))
     }
@@ -103,17 +126,6 @@ class Server: Identifiable {
         return URL(
             string: "mm://\(addr)/applications/\(app.id)/images/header.png"
         )
-    }
-
-    private(set) var connectionStatus: LastStatus = .disconnected
-
-    var errorStatus: Error? {
-        switch self.connectionStatus {
-        case .error(let error), .connecting(_, .some(let error)):
-            error
-        default:
-            nil
-        }
     }
 
     func connect() async throws -> Client {
@@ -158,6 +170,11 @@ class Server: Identifiable {
             return
         }
 
+        self.reloadOperationsInProgress += 1
+        defer {
+            self.reloadOperationsInProgress -= 1
+        }
+
         do {
             let sessions = try await client.listSessions(timeout: 5.0)
             self.sessions = OrderedDictionary(uniqueKeysWithValues: sessions.map { ($0.id, $0) })
@@ -181,6 +198,11 @@ class Server: Identifiable {
             return
         }
 
+        self.reloadOperationsInProgress += 1
+        defer {
+            self.reloadOperationsInProgress -= 1
+        }
+
         do {
             let sessions = try await client.listSessions(timeout: 5.0)
             let apps = try await client.listApplications(timeout: 5.0)
@@ -202,6 +224,22 @@ class Server: Identifiable {
         }
     }
 
+    func launchSession(
+        applicationID: String, displayParams: DisplayParams, permanentGamepads: [Gamepad]
+    ) async throws -> Session {
+        let client = try await self.connect()
+        let session = try await client.launchSession(
+            applicationId: applicationID,
+            displayParams: displayParams,
+            permanentGamepads: permanentGamepads,
+            timeout: 30.0)
+
+        // Add the new session to the view.
+        self.sessions[session.id] = session
+
+        return session
+    }
+
     func fetchApplicationImage(id: String) async throws -> Data {
         return try await self.connect().fetchApplicationImage(
             applicationId: id, format: .header, timeout: 5.0)
@@ -216,7 +254,7 @@ class Server: Identifiable {
 
     func endSession(sessionID: UInt64) async throws {
         try await self.connect().endSession(id: sessionID, timeout: 10.0)
-        await self.reloadSessions()
+        self.sessions.removeValue(forKey: sessionID)
     }
 
     nonisolated var id: ServerAddr { addr }
