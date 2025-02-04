@@ -219,15 +219,15 @@ class AttachmentWindowController: NSWindowController {
         self.window?.makeKeyAndOrderFront(nil)
     }
 
-    /// Detaches from any running session.
-    func detach() {
-        self.lastConfig = nil
-
+    /// Detaches from any running session and closes the window.
+    func dismiss() {
         if self.status.isSome {
             self.presentation.detach()
-            self.window?.close()
             self.audioPlayer.stop()
         }
+
+        self.lastConfig = nil
+        self.window?.close()
     }
 
     /// Reconnects to a running session.
@@ -671,6 +671,7 @@ extension AttachmentWindowController: AttachmentPresentationDelegate {
 
     func didDetach() {
         self.wantsCursorLockedTo = nil
+        self.wantsCursorHidden = false
         self.updateCursor()
     }
 

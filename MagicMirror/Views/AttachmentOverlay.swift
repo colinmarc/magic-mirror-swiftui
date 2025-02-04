@@ -38,13 +38,21 @@ struct AttachmentOverlay: View {
                 }
             }
         case .ended:
-            HStack {
-                Image(systemName: "sun.horizon")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 45, height: 45)
-                    .padding([.trailing])
-                Text("Attachment ended.")
+            VStack {
+                HStack {
+                    Image(systemName: "sun.horizon")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 45, height: 45)
+                        .padding([.trailing])
+                    Text("Attachment ended.")
+                }
+                Button {
+                    AttachmentWindowController.main.dismiss()
+                } label: {
+                    Text("Close Window")
+                }
+                .buttonStyle(.link)
             }
         case .none, .connected:
             EmptyView()

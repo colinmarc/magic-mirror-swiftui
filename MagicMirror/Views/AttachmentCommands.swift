@@ -4,7 +4,7 @@ struct AttachmentCommands: Commands {
     var body: some Commands {
         CommandMenu("Session") {
             reattach
-            detach
+            dismiss
             releaseCursor
         }
     }
@@ -19,9 +19,9 @@ struct AttachmentCommands: Commands {
         .disabled(!AttachmentWindowController.main.status.isSome)
     }
 
-    var detach: some View {
+    var dismiss: some View {
         Button {
-            AttachmentWindowController.main.detach()
+            AttachmentWindowController.main.dismiss()
         } label: {
             Text("Disconnect")
         }
