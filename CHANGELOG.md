@@ -1,3 +1,11 @@
+## [0.1.4] - 2025-02-04
+
+### Bugfixes
+
+- Improve ux when at attachment ends (28fb85738a69a957dfc756084e1ead0824254e2a)
+- Keep the server browser in sync (3d88ea3426a1faab72e874a1c1523e3a97c8bd87)
+- Process video packets in order (e9e1bf8bb35c17ee586dec93c0e7a3ecfea7bd79)
+
 ## [0.1.3] - 2025-02-01
 
 ### New Features
