@@ -101,8 +101,6 @@ class AudioBufferNode {
             var consumedFrames = frameCount
             if availableFrames > highWatermark {
                 let skip = ((availableFrames / frameCount) - 1) * frameCount
-                Logger.attachment.debug(
-                    "skipping \(skip) additional frames (original \(consumedFrames)")
                 consumedFrames += skip
             }
 

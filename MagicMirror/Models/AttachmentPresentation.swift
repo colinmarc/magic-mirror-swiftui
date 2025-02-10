@@ -293,6 +293,7 @@ private class Attachment {
     private let superDelegate: any AttachmentPresentationDelegate
 
     private var videoStream: VideoStreamReader?
+    private var maxHierarchicalLayer: UInt32? = nil
     private var audioStream: OpusAudioStreamReader?
 
     init(
@@ -415,6 +416,26 @@ extension Attachment: AttachmentDelegate {
         let pts = packet.pts()
 
         DispatchQueue.main.async {
+            guard let stream = self.videoStream, stream.streamSeq == packet.streamSeq() else {
+                Logger.attachment.debug(
+                    "discarding video packet (streamSeq: \(packet.streamSeq()), seq: \(packet.seq()))"
+                )
+                return
+            }
+
+            if let maxLayer = self.maxHierarchicalLayer {
+                // If we've received a packet with a lower or equal layer to the one we dropped, consider the stream recovered.
+                if packet.hierarchicalLayer() <= maxLayer {
+                    self.maxHierarchicalLayer = nil
+                } else {
+                    // Discard the packet, because we are missing a dependency frame.
+                    Logger.attachment.debug(
+                        "discarding video packet with layer \(packet.hierarchicalLayer()) over max (\(maxLayer))"
+                    )
+                    return
+                }
+            }
+
             self.videoStream?.recvPacket(packet) {
                 // And then after the video frame has been rendered...
                 let now = ContinuousClock.now
@@ -430,18 +451,21 @@ extension Attachment: AttachmentDelegate {
 
     nonisolated func droppedVideoPacket(dropped: MMClientCommon.DroppedPacket) {
         Logger.attachment.debug("dropped video packet: \(String(describing:dropped))")
-        if dropped.hierarchicalLayer != 0 {
-            return
-        }
 
-        weak var this = self
-        Task {
-            if let self = this, await self.enableEventPropogation,
-                let currentStreamSeq = await self.videoStream?.streamSeq,
-                dropped.streamSeq == currentStreamSeq
-            {
-                Logger.attachment.debug("requesting video refresh for \(currentStreamSeq)")
-                await self.attachment?.requestVideoRefresh(streamSeq: currentStreamSeq)
+        DispatchQueue.main.async {
+            guard self.enableEventPropogation, let stream = self.videoStream,
+                stream.streamSeq == dropped.streamSeq
+            else {
+                return
+            }
+
+            if dropped.hierarchicalLayer == 0 {
+                Logger.attachment.debug("requesting video refresh for \(dropped.streamSeq)")
+                self.attachment?.requestVideoRefresh(streamSeq: dropped.streamSeq)
+            } else {
+                // Mark the layer as damaged; we'll discard any packets with a higher layer until we recover.
+                self.maxHierarchicalLayer = min(
+                    dropped.hierarchicalLayer, self.maxHierarchicalLayer ?? UInt32.max)
             }
         }
     }
