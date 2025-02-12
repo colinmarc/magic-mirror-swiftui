@@ -1,3 +1,9 @@
+## [0.1.5] - 2025-02-12
+
+### Bugfixes
+
+- Discard packets when they would break the decoder (ec8fe6c270f3027e17b89faccfee6095c94033c3)
+
 ## [0.1.4] - 2025-02-04
 
 ### Bugfixes
