@@ -151,7 +151,7 @@ class Server: Identifiable {
             Logger.client.info("connecting to \(hostPort, privacy: .public)")
 
             return try await Client(
-                addr: hostPort, clientName: "MagicMirrorApp")
+                addr: hostPort, clientName: "MagicMirrorApp", connectTimeout: 1.0)
         }
 
         self.connectionStatus = .connecting(task, self.errorStatus)

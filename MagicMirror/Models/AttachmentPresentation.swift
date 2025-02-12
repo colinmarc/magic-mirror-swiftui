@@ -430,7 +430,7 @@ extension Attachment: AttachmentDelegate {
 
     nonisolated func droppedVideoPacket(dropped: MMClientCommon.DroppedPacket) {
         Logger.attachment.debug("dropped video packet: \(String(describing:dropped))")
-        if dropped.optional {
+        if dropped.hierarchicalLayer != 0 {
             return
         }
 

@@ -3,7 +3,7 @@ mm_clone_dir := mm_build_dir / "mm"
 rust_target_dir := mm_clone_dir / "mm-client-common/target"
 
 mm_origin := "git@github.com:colinmarc/magic-mirror"
-mm_tag := "mmclient-v0.6.0"
+mm_tag := "mmclient-v0.7.0"
 framework_name := "MMClientCommon"
 
 build_dir := `mktemp -d`
