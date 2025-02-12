@@ -533,7 +533,7 @@ class AttachmentWindowController: NSWindowController {
     }
 
     func keyEvent(_ event: NSEvent, state: MMClientCommon.KeyState) {
-        if let key = Key(scancode: event.keyCode) {
+        if let key = Key(from: event.keyboardHIDUsage, with: event.keyCode) {
             var character: UInt32 = 0
             if key.usedForTextInput, let s = event.characters, s.count > 0 {
                 character = UInt32(s.unicodeScalars.first!)

@@ -85,7 +85,7 @@ protocol AttachmentPresentationDelegate {
 
     func didAttach(_ attachment: MMClientCommon.Attachment)
     func didDetach()
-    func updateCursor(icon: MMClientCommon.CursorIcon, image: NSImage?, hotspot: CGPoint)
+    func updateCursor(icon: MMClientCommon.CursorIcon, image: UIImage?, hotspot: CGPoint)
     func lockPointer(to location: CGPoint)
     func releasePointer()
 }
@@ -498,9 +498,9 @@ extension Attachment: AttachmentDelegate {
     ) {
         DispatchQueue.main.sync {
             if self.enableEventPropogation {
-                var loadedImage: NSImage?
+                var loadedImage: UIImage?
                 if let data = image {
-                    loadedImage = NSImage(data: data)
+                    loadedImage = UIImage(data: data)
                 } else {
                     loadedImage = nil
                 }

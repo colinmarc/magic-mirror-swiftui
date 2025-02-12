@@ -70,8 +70,8 @@ class AttachmentDecompressionSession: VideoStreamPlayer {
         let status = VTDecompressionSessionDecodeFrame(
             self.decoder!, sampleBuffer: buf, flags: ._EnableAsynchronousDecompression,
             infoFlagsOut: &flags,
-            completionHandler: {
-                status, _, imageBuffer, _, _, _ in
+            outputHandler: {
+                status, _, imageBuffer, _, _ in
 
                 if status != noErr {
                     Logger.renderer.error("VTDecompressionSession callback error: \(status)")
@@ -175,7 +175,10 @@ class AttachmentRenderer: NSObject, MTKViewDelegate {
 
         // TODO: better to use CVDisplayLink
         view.preferredFramesPerSecond = 120
-        (view.layer as? CAMetalLayer)?.displaySyncEnabled = false
+
+        #if os(macOS)
+            (view.layer as? CAMetalLayer)?.displaySyncEnabled = false
+        #endif
     }
 
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {

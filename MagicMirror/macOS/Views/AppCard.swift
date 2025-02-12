@@ -106,20 +106,6 @@ struct AppCard<Selection: Hashable>: View {
     }
 }
 
-extension MMClientCommon.Application {
-    var headerImageAvailable: Bool {
-        self.imagesAvailable.contains(.header)
-    }
-
-    var displayName: String {
-        if self.description != "" {
-            return self.description
-        } else {
-            return self.id
-        }
-    }
-}
-
 #Preview {
     @Previewable @State var selection: Int = 0
     let server = Server(addr: "baldanders:9599")

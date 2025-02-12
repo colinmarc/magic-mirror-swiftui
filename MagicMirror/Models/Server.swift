@@ -64,7 +64,7 @@ class Server: Identifiable {
     var apps: OrderedDictionary<String, Application>
     var rootFolder: AppFolder
 
-    var sessions: OrderedDictionary<uint64, Session>
+    var sessions: OrderedDictionary<UInt64, Session>
 
     private var reloadOperationsInProgress = 0
     var isReloading: Bool {

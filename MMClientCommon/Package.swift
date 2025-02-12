@@ -4,7 +4,8 @@ import PackageDescription
 let package = Package(
     name: "MMClientCommon",
     platforms: [
-        .macOS(.v10_15)
+        .macOS(.v10_15),
+        .tvOS(.v15),
     ],
     products: [
         .library(

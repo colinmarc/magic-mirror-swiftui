@@ -24,9 +24,15 @@ _clone-mm:
 	git reset --hard {{mm_tag}}
 
 _build-mm $MACOSX_DEPLOYMENT_TARGET="10.15": _clone-mm
-	cd {{mm_clone_dir}}/mm-client-common && cargo build -q --release \
-		--target aarch64-apple-darwin \
-		--target x86_64-apple-darwin
+	cd {{mm_clone_dir}}/mm-client-common && cargo build \
+		-q --release \
+		--target x86_64-apple-darwin \
+		--target aarch64-apple-darwin
+	cd {{mm_clone_dir}}/mm-client-common && cargo +nightly build \
+		-q --release -Zbuild-std \
+		--target aarch64-apple-tvos \
+		--target aarch64-apple-tvos-sim
+
 
 build-common-xcframework: _build-mm
 	@rm -rf {{mm_build_dir}}/{{framework_name}}.xcframework
@@ -51,19 +57,29 @@ build-common-xcframework: _build-mm
 	cat {{mm_build_dir}}/uniffi/*.modulemap > {{mm_build_dir}}/uniffi/include/module.modulemap
 
 	# Create a "universal" ar with both arches in it.
-	lipo -create -output {{mm_build_dir}}/libmm_client_common-universal.a \
-		{{rust_target_dir}}/aarch64-apple-darwin/release/libmm_client_common.a \
+	lipo -create -output {{mm_build_dir}}/libmm_client_common-macos-universal.a \
 		{{rust_target_dir}}/x86_64-apple-darwin/release/libmm_client_common.a \
+		{{rust_target_dir}}/aarch64-apple-darwin/release/libmm_client_common.a \
+	#
+	# xcodebuild -create-xcframework \
+	# 	-library {{mm_build_dir}}/libmm_client_common-macos-universal.a \
+	# 	-headers {{mm_build_dir}}/uniffi/include \
+	# 	-output {{mm_build_dir}}/{{framework_name}}-macos-universal.xcframework
 
 	xcodebuild -create-xcframework \
-		-library {{mm_build_dir}}/libmm_client_common-universal.a \
+	 	-library {{mm_build_dir}}/libmm_client_common-macos-universal.a \
+		-headers {{mm_build_dir}}/uniffi/include \
+		-library {{rust_target_dir}}/aarch64-apple-tvos/release/libmm_client_common.a \
+		-headers {{mm_build_dir}}/uniffi/include \
+		-library {{rust_target_dir}}/aarch64-apple-tvos-sim/release/libmm_client_common.a \
 		-headers {{mm_build_dir}}/uniffi/include \
 		-output {{mm_build_dir}}/{{framework_name}}.xcframework
 
 build: build-common-xcframework
 	xcode-build-server config -scheme MagicMirror -workspace *.xcworkspace
 	tuist generate --no-open
-	tuist build --build-output-path {{build_dir}} -C Release
+	tuist build --build-output-path {{build_dir}} -C Release --platform macOS
+	tuist build --build-output-path {{build_dir}} -C Release --platform tvOS
 
 run: build
 	open {{build_dir}}/Debug/MagicMirror.app

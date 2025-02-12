@@ -1,5 +1,5 @@
-import Foundation
 import CoreVideo
+import Foundation
 
 // Borrowed from https://github.com/computer-graphics-tools/core-video-tools, which doesn't build on tvOS.
 
@@ -260,12 +260,18 @@ public enum CVPixelFormat: CustomStringConvertible, CaseIterable, Codable {
         case kCVPixelFormatType_420YpCbCr8Planar: self = .type_420YpCbCr8Planar
         case kCVPixelFormatType_420YpCbCr8PlanarFullRange: self = .type_420YpCbCr8PlanarFullRange
         case kCVPixelFormatType_422YpCbCr_4A_8BiPlanar: self = .type_422YpCbCr_4A_8BiPlanar
-        case kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange: self = .type_420YpCbCr8BiPlanarVideoRange
-        case kCVPixelFormatType_420YpCbCr8BiPlanarFullRange: self = .type_420YpCbCr8BiPlanarFullRange
-        case kCVPixelFormatType_422YpCbCr8BiPlanarVideoRange: self = .type_422YpCbCr8BiPlanarVideoRange
-        case kCVPixelFormatType_422YpCbCr8BiPlanarFullRange: self = .type_422YpCbCr8BiPlanarFullRange
-        case kCVPixelFormatType_444YpCbCr8BiPlanarVideoRange: self = .type_444YpCbCr8BiPlanarVideoRange
-        case kCVPixelFormatType_444YpCbCr8BiPlanarFullRange: self = .type_444YpCbCr8BiPlanarFullRange
+        case kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange:
+            self = .type_420YpCbCr8BiPlanarVideoRange
+        case kCVPixelFormatType_420YpCbCr8BiPlanarFullRange:
+            self = .type_420YpCbCr8BiPlanarFullRange
+        case kCVPixelFormatType_422YpCbCr8BiPlanarVideoRange:
+            self = .type_422YpCbCr8BiPlanarVideoRange
+        case kCVPixelFormatType_422YpCbCr8BiPlanarFullRange:
+            self = .type_422YpCbCr8BiPlanarFullRange
+        case kCVPixelFormatType_444YpCbCr8BiPlanarVideoRange:
+            self = .type_444YpCbCr8BiPlanarVideoRange
+        case kCVPixelFormatType_444YpCbCr8BiPlanarFullRange:
+            self = .type_444YpCbCr8BiPlanarFullRange
         case kCVPixelFormatType_422YpCbCr8_yuvs: self = .type_422YpCbCr8_yuvs
         case kCVPixelFormatType_422YpCbCr8FullRange: self = .type_422YpCbCr8FullRange
         case kCVPixelFormatType_OneComponent8: self = .type_OneComponent8
@@ -273,7 +279,8 @@ public enum CVPixelFormat: CustomStringConvertible, CaseIterable, Codable {
         case kCVPixelFormatType_30RGBLEPackedWideGamut: self = .type_30RGBLEPackedWideGamut
         case kCVPixelFormatType_ARGB2101010LEPacked: self = .type_ARGB2101010LEPacked
         case kCVPixelFormatType_40ARGBLEWideGamut: self = .type_40ARGBLEWideGamut
-        case kCVPixelFormatType_40ARGBLEWideGamutPremultiplied: self = .type_40ARGBLEWideGamutPremultiplied
+        case kCVPixelFormatType_40ARGBLEWideGamutPremultiplied:
+            self = .type_40ARGBLEWideGamutPremultiplied
         case kCVPixelFormatType_OneComponent10: self = .type_OneComponent10
         case kCVPixelFormatType_OneComponent12: self = .type_OneComponent12
         case kCVPixelFormatType_OneComponent16: self = .type_OneComponent16
@@ -292,32 +299,50 @@ public enum CVPixelFormat: CustomStringConvertible, CaseIterable, Codable {
         case kCVPixelFormatType_DisparityFloat32: self = .type_DisparityFloat32
         case kCVPixelFormatType_DepthFloat16: self = .type_DepthFloat16
         case kCVPixelFormatType_DepthFloat32: self = .type_DepthFloat32
-        case kCVPixelFormatType_420YpCbCr10BiPlanarVideoRange: self = .type_420YpCbCr10BiPlanarVideoRange
-        case kCVPixelFormatType_422YpCbCr10BiPlanarVideoRange: self = .type_422YpCbCr10BiPlanarVideoRange
-        case kCVPixelFormatType_444YpCbCr10BiPlanarVideoRange: self = .type_444YpCbCr10BiPlanarVideoRange
-        case kCVPixelFormatType_420YpCbCr10BiPlanarFullRange: self = .type_420YpCbCr10BiPlanarFullRange
-        case kCVPixelFormatType_422YpCbCr10BiPlanarFullRange: self = .type_422YpCbCr10BiPlanarFullRange
-        case kCVPixelFormatType_444YpCbCr10BiPlanarFullRange: self = .type_444YpCbCr10BiPlanarFullRange
-        case kCVPixelFormatType_420YpCbCr8VideoRange_8A_TriPlanar: self = .type_420YpCbCr8VideoRange_8A_TriPlanar
+        case kCVPixelFormatType_420YpCbCr10BiPlanarVideoRange:
+            self = .type_420YpCbCr10BiPlanarVideoRange
+        case kCVPixelFormatType_422YpCbCr10BiPlanarVideoRange:
+            self = .type_422YpCbCr10BiPlanarVideoRange
+        case kCVPixelFormatType_444YpCbCr10BiPlanarVideoRange:
+            self = .type_444YpCbCr10BiPlanarVideoRange
+        case kCVPixelFormatType_420YpCbCr10BiPlanarFullRange:
+            self = .type_420YpCbCr10BiPlanarFullRange
+        case kCVPixelFormatType_422YpCbCr10BiPlanarFullRange:
+            self = .type_422YpCbCr10BiPlanarFullRange
+        case kCVPixelFormatType_444YpCbCr10BiPlanarFullRange:
+            self = .type_444YpCbCr10BiPlanarFullRange
+        case kCVPixelFormatType_420YpCbCr8VideoRange_8A_TriPlanar:
+            self = .type_420YpCbCr8VideoRange_8A_TriPlanar
         case kCVPixelFormatType_16VersatileBayer: self = .type_16VersatileBayer
         case kCVPixelFormatType_64RGBA_DownscaledProResRAW: self = .type_64RGBA_DownscaledProResRAW
-        case kCVPixelFormatType_422YpCbCr16BiPlanarVideoRange: self = .type_422YpCbCr16BiPlanarVideoRange
-        case kCVPixelFormatType_444YpCbCr16BiPlanarVideoRange: self = .type_444YpCbCr16BiPlanarVideoRange
-        case kCVPixelFormatType_444YpCbCr16VideoRange_16A_TriPlanar: self = .type_444YpCbCr16VideoRange_16A_TriPlanar
+        case kCVPixelFormatType_422YpCbCr16BiPlanarVideoRange:
+            self = .type_422YpCbCr16BiPlanarVideoRange
+        case kCVPixelFormatType_444YpCbCr16BiPlanarVideoRange:
+            self = .type_444YpCbCr16BiPlanarVideoRange
+        case kCVPixelFormatType_444YpCbCr16VideoRange_16A_TriPlanar:
+            self = .type_444YpCbCr16VideoRange_16A_TriPlanar
         case kCVPixelFormatType_Lossless_32BGRA: self = .type_Lossless_32BGRA
-        case kCVPixelFormatType_Lossless_420YpCbCr8BiPlanarVideoRange: self = .type_Lossless_420YpCbCr8BiPlanarVideoRange
-        case kCVPixelFormatType_Lossless_420YpCbCr8BiPlanarFullRange: self = .type_Lossless_420YpCbCr8BiPlanarFullRange
-        case kCVPixelFormatType_Lossless_420YpCbCr10PackedBiPlanarVideoRange: self = .type_Lossless_420YpCbCr10PackedBiPlanarVideoRange
-        case kCVPixelFormatType_Lossless_422YpCbCr10PackedBiPlanarVideoRange: self = .type_Lossless_422YpCbCr10PackedBiPlanarVideoRange
+        case kCVPixelFormatType_Lossless_420YpCbCr8BiPlanarVideoRange:
+            self = .type_Lossless_420YpCbCr8BiPlanarVideoRange
+        case kCVPixelFormatType_Lossless_420YpCbCr8BiPlanarFullRange:
+            self = .type_Lossless_420YpCbCr8BiPlanarFullRange
+        case kCVPixelFormatType_Lossless_420YpCbCr10PackedBiPlanarVideoRange:
+            self = .type_Lossless_420YpCbCr10PackedBiPlanarVideoRange
+        case kCVPixelFormatType_Lossless_422YpCbCr10PackedBiPlanarVideoRange:
+            self = .type_Lossless_422YpCbCr10PackedBiPlanarVideoRange
         case kCVPixelFormatType_Lossy_32BGRA: self = .type_Lossy_32BGRA
-        case kCVPixelFormatType_Lossy_420YpCbCr8BiPlanarVideoRange: self = .type_Lossy_420YpCbCr8BiPlanarVideoRange
-        case kCVPixelFormatType_Lossy_420YpCbCr8BiPlanarFullRange: self = .type_Lossy_420YpCbCr8BiPlanarFullRange
-        case kCVPixelFormatType_Lossy_420YpCbCr10PackedBiPlanarVideoRange: self = .type_Lossy_420YpCbCr10PackedBiPlanarVideoRange
-        case kCVPixelFormatType_Lossy_422YpCbCr10PackedBiPlanarVideoRange: self = .type_Lossy_422YpCbCr10PackedBiPlanarVideoRange
+        case kCVPixelFormatType_Lossy_420YpCbCr8BiPlanarVideoRange:
+            self = .type_Lossy_420YpCbCr8BiPlanarVideoRange
+        case kCVPixelFormatType_Lossy_420YpCbCr8BiPlanarFullRange:
+            self = .type_Lossy_420YpCbCr8BiPlanarFullRange
+        case kCVPixelFormatType_Lossy_420YpCbCr10PackedBiPlanarVideoRange:
+            self = .type_Lossy_420YpCbCr10PackedBiPlanarVideoRange
+        case kCVPixelFormatType_Lossy_422YpCbCr10PackedBiPlanarVideoRange:
+            self = .type_Lossy_422YpCbCr10PackedBiPlanarVideoRange
         default: self = .unknown
         }
     }
-    
+
     /// The raw `OSType` value corresponding to this pixel format.
     public var rawValue: OSType {
         switch self {
@@ -358,12 +383,18 @@ public enum CVPixelFormat: CustomStringConvertible, CaseIterable, Codable {
         case .type_420YpCbCr8Planar: return kCVPixelFormatType_420YpCbCr8Planar
         case .type_420YpCbCr8PlanarFullRange: return kCVPixelFormatType_420YpCbCr8PlanarFullRange
         case .type_422YpCbCr_4A_8BiPlanar: return kCVPixelFormatType_422YpCbCr_4A_8BiPlanar
-        case .type_420YpCbCr8BiPlanarVideoRange: return kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange
-        case .type_420YpCbCr8BiPlanarFullRange: return kCVPixelFormatType_420YpCbCr8BiPlanarFullRange
-        case .type_422YpCbCr8BiPlanarVideoRange: return kCVPixelFormatType_422YpCbCr8BiPlanarVideoRange
-        case .type_422YpCbCr8BiPlanarFullRange: return kCVPixelFormatType_422YpCbCr8BiPlanarFullRange
-        case .type_444YpCbCr8BiPlanarVideoRange: return kCVPixelFormatType_444YpCbCr8BiPlanarVideoRange
-        case .type_444YpCbCr8BiPlanarFullRange: return kCVPixelFormatType_444YpCbCr8BiPlanarFullRange
+        case .type_420YpCbCr8BiPlanarVideoRange:
+            return kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange
+        case .type_420YpCbCr8BiPlanarFullRange:
+            return kCVPixelFormatType_420YpCbCr8BiPlanarFullRange
+        case .type_422YpCbCr8BiPlanarVideoRange:
+            return kCVPixelFormatType_422YpCbCr8BiPlanarVideoRange
+        case .type_422YpCbCr8BiPlanarFullRange:
+            return kCVPixelFormatType_422YpCbCr8BiPlanarFullRange
+        case .type_444YpCbCr8BiPlanarVideoRange:
+            return kCVPixelFormatType_444YpCbCr8BiPlanarVideoRange
+        case .type_444YpCbCr8BiPlanarFullRange:
+            return kCVPixelFormatType_444YpCbCr8BiPlanarFullRange
         case .type_422YpCbCr8_yuvs: return kCVPixelFormatType_422YpCbCr8_yuvs
         case .type_422YpCbCr8FullRange: return kCVPixelFormatType_422YpCbCr8FullRange
         case .type_OneComponent8: return kCVPixelFormatType_OneComponent8
@@ -371,7 +402,8 @@ public enum CVPixelFormat: CustomStringConvertible, CaseIterable, Codable {
         case .type_30RGBLEPackedWideGamut: return kCVPixelFormatType_30RGBLEPackedWideGamut
         case .type_ARGB2101010LEPacked: return kCVPixelFormatType_ARGB2101010LEPacked
         case .type_40ARGBLEWideGamut: return kCVPixelFormatType_40ARGBLEWideGamut
-        case .type_40ARGBLEWideGamutPremultiplied: return kCVPixelFormatType_40ARGBLEWideGamutPremultiplied
+        case .type_40ARGBLEWideGamutPremultiplied:
+            return kCVPixelFormatType_40ARGBLEWideGamutPremultiplied
         case .type_OneComponent10: return kCVPixelFormatType_OneComponent10
         case .type_OneComponent12: return kCVPixelFormatType_OneComponent12
         case .type_OneComponent16: return kCVPixelFormatType_OneComponent16
@@ -390,32 +422,50 @@ public enum CVPixelFormat: CustomStringConvertible, CaseIterable, Codable {
         case .type_DisparityFloat32: return kCVPixelFormatType_DisparityFloat32
         case .type_DepthFloat16: return kCVPixelFormatType_DepthFloat16
         case .type_DepthFloat32: return kCVPixelFormatType_DepthFloat32
-        case .type_420YpCbCr10BiPlanarVideoRange: return kCVPixelFormatType_420YpCbCr10BiPlanarVideoRange
-        case .type_422YpCbCr10BiPlanarVideoRange: return kCVPixelFormatType_422YpCbCr10BiPlanarVideoRange
-        case .type_444YpCbCr10BiPlanarVideoRange: return kCVPixelFormatType_444YpCbCr10BiPlanarVideoRange
-        case .type_420YpCbCr10BiPlanarFullRange: return kCVPixelFormatType_420YpCbCr10BiPlanarFullRange
-        case .type_422YpCbCr10BiPlanarFullRange: return kCVPixelFormatType_422YpCbCr10BiPlanarFullRange
-        case .type_444YpCbCr10BiPlanarFullRange: return kCVPixelFormatType_444YpCbCr10BiPlanarFullRange
-        case .type_420YpCbCr8VideoRange_8A_TriPlanar: return kCVPixelFormatType_420YpCbCr8VideoRange_8A_TriPlanar
+        case .type_420YpCbCr10BiPlanarVideoRange:
+            return kCVPixelFormatType_420YpCbCr10BiPlanarVideoRange
+        case .type_422YpCbCr10BiPlanarVideoRange:
+            return kCVPixelFormatType_422YpCbCr10BiPlanarVideoRange
+        case .type_444YpCbCr10BiPlanarVideoRange:
+            return kCVPixelFormatType_444YpCbCr10BiPlanarVideoRange
+        case .type_420YpCbCr10BiPlanarFullRange:
+            return kCVPixelFormatType_420YpCbCr10BiPlanarFullRange
+        case .type_422YpCbCr10BiPlanarFullRange:
+            return kCVPixelFormatType_422YpCbCr10BiPlanarFullRange
+        case .type_444YpCbCr10BiPlanarFullRange:
+            return kCVPixelFormatType_444YpCbCr10BiPlanarFullRange
+        case .type_420YpCbCr8VideoRange_8A_TriPlanar:
+            return kCVPixelFormatType_420YpCbCr8VideoRange_8A_TriPlanar
         case .type_16VersatileBayer: return kCVPixelFormatType_16VersatileBayer
         case .type_64RGBA_DownscaledProResRAW: return kCVPixelFormatType_64RGBA_DownscaledProResRAW
-        case .type_422YpCbCr16BiPlanarVideoRange: return kCVPixelFormatType_422YpCbCr16BiPlanarVideoRange
-        case .type_444YpCbCr16BiPlanarVideoRange: return kCVPixelFormatType_444YpCbCr16BiPlanarVideoRange
-        case .type_444YpCbCr16VideoRange_16A_TriPlanar: return kCVPixelFormatType_444YpCbCr16VideoRange_16A_TriPlanar
+        case .type_422YpCbCr16BiPlanarVideoRange:
+            return kCVPixelFormatType_422YpCbCr16BiPlanarVideoRange
+        case .type_444YpCbCr16BiPlanarVideoRange:
+            return kCVPixelFormatType_444YpCbCr16BiPlanarVideoRange
+        case .type_444YpCbCr16VideoRange_16A_TriPlanar:
+            return kCVPixelFormatType_444YpCbCr16VideoRange_16A_TriPlanar
         case .type_Lossless_32BGRA: return kCVPixelFormatType_Lossless_32BGRA
-        case .type_Lossless_420YpCbCr8BiPlanarVideoRange: return kCVPixelFormatType_Lossless_420YpCbCr8BiPlanarVideoRange
-        case .type_Lossless_420YpCbCr8BiPlanarFullRange: return kCVPixelFormatType_Lossless_420YpCbCr8BiPlanarFullRange
-        case .type_Lossless_420YpCbCr10PackedBiPlanarVideoRange: return kCVPixelFormatType_Lossless_420YpCbCr10PackedBiPlanarVideoRange
-        case .type_Lossless_422YpCbCr10PackedBiPlanarVideoRange: return kCVPixelFormatType_Lossless_422YpCbCr10PackedBiPlanarVideoRange
+        case .type_Lossless_420YpCbCr8BiPlanarVideoRange:
+            return kCVPixelFormatType_Lossless_420YpCbCr8BiPlanarVideoRange
+        case .type_Lossless_420YpCbCr8BiPlanarFullRange:
+            return kCVPixelFormatType_Lossless_420YpCbCr8BiPlanarFullRange
+        case .type_Lossless_420YpCbCr10PackedBiPlanarVideoRange:
+            return kCVPixelFormatType_Lossless_420YpCbCr10PackedBiPlanarVideoRange
+        case .type_Lossless_422YpCbCr10PackedBiPlanarVideoRange:
+            return kCVPixelFormatType_Lossless_422YpCbCr10PackedBiPlanarVideoRange
         case .type_Lossy_32BGRA: return kCVPixelFormatType_Lossy_32BGRA
-        case .type_Lossy_420YpCbCr8BiPlanarVideoRange: return kCVPixelFormatType_Lossy_420YpCbCr8BiPlanarVideoRange
-        case .type_Lossy_420YpCbCr8BiPlanarFullRange: return kCVPixelFormatType_Lossy_420YpCbCr8BiPlanarFullRange
-        case .type_Lossy_420YpCbCr10PackedBiPlanarVideoRange: return kCVPixelFormatType_Lossy_420YpCbCr10PackedBiPlanarVideoRange
-        case .type_Lossy_422YpCbCr10PackedBiPlanarVideoRange: return kCVPixelFormatType_Lossy_422YpCbCr10PackedBiPlanarVideoRange
-        case .unknown: return 0x00000000
+        case .type_Lossy_420YpCbCr8BiPlanarVideoRange:
+            return kCVPixelFormatType_Lossy_420YpCbCr8BiPlanarVideoRange
+        case .type_Lossy_420YpCbCr8BiPlanarFullRange:
+            return kCVPixelFormatType_Lossy_420YpCbCr8BiPlanarFullRange
+        case .type_Lossy_420YpCbCr10PackedBiPlanarVideoRange:
+            return kCVPixelFormatType_Lossy_420YpCbCr10PackedBiPlanarVideoRange
+        case .type_Lossy_422YpCbCr10PackedBiPlanarVideoRange:
+            return kCVPixelFormatType_Lossy_422YpCbCr10PackedBiPlanarVideoRange
+        case .unknown: return 0x0000_0000
         }
     }
-    
+
     /// A human-readable description of the pixel format.
     public var description: String {
         switch self {
@@ -501,28 +551,36 @@ public enum CVPixelFormat: CustomStringConvertible, CaseIterable, Codable {
         case .type_444YpCbCr16BiPlanarVideoRange: return "444YpCbCr16BiPlanarVideoRange"
         case .type_444YpCbCr16VideoRange_16A_TriPlanar: return "444YpCbCr16VideoRange_16A_TriPlanar"
         case .type_Lossless_32BGRA: return "Lossless_32BGRA"
-        case .type_Lossless_420YpCbCr8BiPlanarVideoRange: return "Lossless_420YpCbCr8BiPlanarVideoRange"
-        case .type_Lossless_420YpCbCr8BiPlanarFullRange: return "Lossless_420YpCbCr8BiPlanarFullRange"
-        case .type_Lossless_420YpCbCr10PackedBiPlanarVideoRange: return "Lossless_420YpCbCr10PackedBiPlanarVideoRange"
-        case .type_Lossless_422YpCbCr10PackedBiPlanarVideoRange: return "Lossless_422YpCbCr10PackedBiPlanarVideoRange"
+        case .type_Lossless_420YpCbCr8BiPlanarVideoRange:
+            return "Lossless_420YpCbCr8BiPlanarVideoRange"
+        case .type_Lossless_420YpCbCr8BiPlanarFullRange:
+            return "Lossless_420YpCbCr8BiPlanarFullRange"
+        case .type_Lossless_420YpCbCr10PackedBiPlanarVideoRange:
+            return "Lossless_420YpCbCr10PackedBiPlanarVideoRange"
+        case .type_Lossless_422YpCbCr10PackedBiPlanarVideoRange:
+            return "Lossless_422YpCbCr10PackedBiPlanarVideoRange"
         case .type_Lossy_32BGRA: return "Lossy_32BGRA"
         case .type_Lossy_420YpCbCr8BiPlanarVideoRange: return "Lossy_420YpCbCr8BiPlanarVideoRange"
         case .type_Lossy_420YpCbCr8BiPlanarFullRange: return "Lossy_420YpCbCr8BiPlanarFullRange"
-        case .type_Lossy_420YpCbCr10PackedBiPlanarVideoRange: return "Lossy_420YpCbCr10PackedBiPlanarVideoRange"
-        case .type_Lossy_422YpCbCr10PackedBiPlanarVideoRange: return "Lossy_422YpCbCr10PackedBiPlanarVideoRange"
+        case .type_Lossy_420YpCbCr10PackedBiPlanarVideoRange:
+            return "Lossy_420YpCbCr10PackedBiPlanarVideoRange"
+        case .type_Lossy_422YpCbCr10PackedBiPlanarVideoRange:
+            return "Lossy_422YpCbCr10PackedBiPlanarVideoRange"
         case .unknown: return "Unknown"
         }
     }
 }
 
 /// Extension on CVPixelBuffer to provide convenient Swift-friendly methods and properties.
-public extension CVPixelBuffer {
+extension CVPixelBuffer {
     /// The width of the PixelBuffer.
-    var width: Int { CVPixelBufferGetWidth(self) }
-    
+    public var width: Int { CVPixelBufferGetWidth(self) }
+
     /// The height of the PixelBuffer.
-    var height: Int { CVPixelBufferGetHeight(self) }
-    
+    public var height: Int { CVPixelBufferGetHeight(self) }
+
     /// The `CVPixelFormat` of the PixelBuffer.
-    var cvPixelFormat: CVPixelFormat { .init(rawValue: CVPixelBufferGetPixelFormatType(self)) }
+    public var cvPixelFormat: CVPixelFormat {
+        .init(rawValue: CVPixelBufferGetPixelFormatType(self))
+    }
 }
