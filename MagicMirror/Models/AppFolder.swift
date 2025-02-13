@@ -4,13 +4,15 @@ import MMClientCommon
 class AppFolder: Identifiable, Hashable {
     let parent: AppFolder?
     let fullPath: [String]
+    let name: String
 
     var folderChildren = OrderedDictionary<String, AppFolder>()
     var appChildren = OrderedDictionary<String, Application>()
 
-    init(parent: AppFolder?, fullPath: [String]) {
+    init(parent: AppFolder?, fullPath: [String], name: String? = nil) {
         self.parent = parent
         self.fullPath = fullPath
+        self.name = (name ?? self.fullPath.last ?? "")
     }
 
     func insertApp(_ app: Application, at path: [String]) {
@@ -30,10 +32,6 @@ class AppFolder: Identifiable, Hashable {
         } else {
             self.appChildren
         }
-    }
-
-    var name: String {
-        self.fullPath.last ?? ""
     }
 
     var isRoot: Bool {

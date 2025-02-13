@@ -19,6 +19,7 @@ let project = Project(
             url: "https://github.com/michaeltyson/TPCircularBuffer",
             requirement: .upToNextMajor(from: "1.6.2")),
     ],
+    settings: .settings(base: SettingsDictionary().automaticCodeSigning(devTeam: "5H2235KKSQ")),
     targets: [
         .target(
             name: "MagicMirror",

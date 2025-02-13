@@ -12,6 +12,7 @@ next_version := `git cliff --bumped-version`
 
 clean:
 	rm -rf {{mm_build_dir}}
+	tuist clean
 
 _clone-mm:
 	#!/usr/bin/env bash
@@ -60,18 +61,19 @@ build-common-xcframework: _build-mm
 	lipo -create -output {{mm_build_dir}}/libmm_client_common-macos-universal.a \
 		{{rust_target_dir}}/x86_64-apple-darwin/release/libmm_client_common.a \
 		{{rust_target_dir}}/aarch64-apple-darwin/release/libmm_client_common.a \
-	#
-	# xcodebuild -create-xcframework \
-	# 	-library {{mm_build_dir}}/libmm_client_common-macos-universal.a \
-	# 	-headers {{mm_build_dir}}/uniffi/include \
-	# 	-output {{mm_build_dir}}/{{framework_name}}-macos-universal.xcframework
+
+	# Give the two tvOS libs unique names.
+	cp {{rust_target_dir}}/aarch64-apple-tvos/release/libmm_client_common.a \
+		{{mm_build_dir}}/libmm_client_common-tvos.a
+	cp {{rust_target_dir}}/aarch64-apple-tvos-sim/release/libmm_client_common.a \
+		{{mm_build_dir}}/libmm_client_common-tvos-sim.a
 
 	xcodebuild -create-xcframework \
 	 	-library {{mm_build_dir}}/libmm_client_common-macos-universal.a \
 		-headers {{mm_build_dir}}/uniffi/include \
-		-library {{rust_target_dir}}/aarch64-apple-tvos/release/libmm_client_common.a \
+		-library {{mm_build_dir}}/libmm_client_common-tvos.a \
 		-headers {{mm_build_dir}}/uniffi/include \
-		-library {{rust_target_dir}}/aarch64-apple-tvos-sim/release/libmm_client_common.a \
+		-library {{mm_build_dir}}/libmm_client_common-tvos-sim.a \
 		-headers {{mm_build_dir}}/uniffi/include \
 		-output {{mm_build_dir}}/{{framework_name}}.xcframework
 
@@ -79,7 +81,7 @@ build: build-common-xcframework
 	xcode-build-server config -scheme MagicMirror -workspace *.xcworkspace
 	tuist generate --no-open
 	tuist build --build-output-path {{build_dir}} -C Release --platform macOS
-	tuist build --build-output-path {{build_dir}} -C Release --platform tvOS
+	# tuist build --build-output-path {{build_dir}} -C Release --platform tvOS
 
 run: build
 	open {{build_dir}}/Debug/MagicMirror.app

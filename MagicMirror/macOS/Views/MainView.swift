@@ -14,14 +14,14 @@ struct MainView: View {
             detail: {
                 if let conf = selectedServer {
                     let server = ServerManager.shared.client(for: conf)
-                    ServerLoader(server: server)
-                        .focusedSceneValue(\.server, server)
+                    ServerLoader(server: server) {
+                        ServerBrowser(server: server)
+                    }
+                    .focusedSceneValue(\.server, server)
                 } else {
-                    ContentUnavailableView(
-                        "No Server Selected", systemImage: "server.rack",
-                        description: Text(
-                            "Choose a server on the left to see available apps and sessions."
-                        ))
+                    Sorry(
+                        systemImage: "server.rack", title: "No Server Selected",
+                        subtitle: "Choose a server on the left to see available apps and sessions.")
                 }
             }
         )

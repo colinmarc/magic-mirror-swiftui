@@ -89,6 +89,8 @@ class Server: Identifiable {
         }
     }
 
+    var currentPing: Duration? = nil
+
     convenience init(addr: String) {
         self.init(addr: .hostPort(addr))
     }
@@ -105,6 +107,19 @@ class Server: Identifiable {
 
         Task {
             await self.reloadSessionsAndApps()
+
+            // Ping won't be valid for a few seconds.
+            try await Task.sleep(for: .seconds(1.5))
+
+            while true {
+                if case .connected(let client) = connectionStatus {
+                    self.currentPing = .seconds(client.stats().rtt)
+                } else {
+                    self.currentPing = nil
+                }
+
+                try await Task.sleep(for: .seconds(1))
+            }
         }
     }
 
@@ -209,7 +224,7 @@ class Server: Identifiable {
 
             self.sessions = OrderedDictionary(uniqueKeysWithValues: sessions.map { ($0.id, $0) })
             self.apps = OrderedDictionary(uniqueKeysWithValues: apps.map { ($0.id, $0) })
-            self.rootFolder = AppFolder(parent: nil, fullPath: [])
+            self.rootFolder = AppFolder(parent: nil, fullPath: [], name: self.addr.displayName)
             for (_, app) in self.apps {
                 self.rootFolder.insertApp(app, at: app.folder)
             }
